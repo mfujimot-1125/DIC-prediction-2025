@@ -3,10 +3,18 @@ with
         select
             extended_icu_stays.*,
             timestamp_trunc(in_time, day) as first_time_window_start_time
-        from {{ ref("medicu", "one_icu_derived_extended_icu_stays") }} extended_icu_stays
+        from
+            {{ ref("medicu", "one_icu_derived_extended_icu_stays") }} extended_icu_stays
         where
             icu_stay_id in (
-                select icu_stay_id from {{ ref("medicu", "research_dic_prediction_2025_01_eligibility_criteria") }}
+                select icu_stay_id
+                from
+                    {{
+                        ref(
+                            "medicu",
+                            "research_dic_prediction_2025_01_eligibility_criteria",
+                        )
+                    }}
             )
     ),
     censor_outcome_or_treatment as (
@@ -17,7 +25,8 @@ with
         union all
         select icu_stay_id, timestamp_trunc(min(time), day) as censoring_time
         from {{ ref("medicu", "one_icu_injections") }}
-        left join {{ ref("medicu", "one_icu_injection_components") }} using (injection_id)
+        left join
+            {{ ref("medicu", "one_icu_injection_components") }} using (injection_id)
         where
             injection_product_name
             in ("nonthron", "neuart", "anthrobin", "acolan", "recomodulin")
@@ -25,7 +34,10 @@ with
         union all
         select icu_stay_id, timestamp_trunc(min(start_time), day) as censoring_time
         from {{ ref("medicu", "one_icu_blood_transfusions") }}
-        left join {{ ref("medicu", "one_icu_blood_transfusion_components") }} using (blood_transfusion_id)
+        left join
+            {{ ref("medicu", "one_icu_blood_transfusion_components") }} using (
+                blood_transfusion_id
+            )
         where blood_product_name like "pc%"
         group by icu_stay_id
         union all

@@ -44,7 +44,7 @@ with
         select icu_stay_id, timestamp_trunc(out_time, day) as censoring_time
         from {{ ref("medicu", "one_icu_derived_extended_icu_stays") }}
         union all
-        select icu_stay_id, datetime_add(first_time_window_start_time, interval 7 day)
+        select icu_stay_id, datetime_add(first_time_window_start_time, interval 7 day) as censoring_time
         from define_first_time_window_start_time
     ),
     first_censoring as (

@@ -65,10 +65,8 @@ with
             generate_array(
                 0,
                 cast(
-                    floor(
-                        timestamp_diff(
-                            time_window_end_time, first_time_window_start_time, day
-                        )
+                    timestamp_diff(
+                        time_window_end_time, first_time_window_start_time, day
                     ) as int64
                 )
             ) as time_window_indices

@@ -13,7 +13,7 @@ with
                 from {{ ref("medicu", "one_icu_blood_gas") }}
                 where
                     field_name in ('ph', 'base_excess', 'lactate', 'glucose')
-                    and sample_type = 'arterial_blood_gas'
+                    and sample_type in ('arterial_blood_gas', 'venous_blood_gas')
                     and icu_stay_id in (
                         select icu_stay_id
                         from

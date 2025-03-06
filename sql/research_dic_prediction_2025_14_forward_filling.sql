@@ -66,14 +66,6 @@ with
             }},
             {{
                 forward_filling(
-                    "sofa_cardiovascular",
-                    "unbounded",
-                    partition_keys=["icu_stay_id"],
-                    order=["time_window_index"],
-                )
-            }},
-            {{
-                forward_filling(
                     "bt50",
                     "unbounded",
                     partition_keys=["icu_stay_id"],

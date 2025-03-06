@@ -5,8 +5,7 @@ with
             tw.time_window_index,
             tw.start_time,
             tw.end_time,
-            max(sofa.respiration_24hours) as sofa_respiration,
-            max(sofa.cardiovascular_24hours) as sofa_cardiovascular
+            max(sofa.respiration_24hours) as sofa_respiration
         from {{ ref("medicu", "research_dic_prediction_2025_02_time_windows") }} tw
         left join
             {{ ref("medicu", "one_icu_derived_sofa_hourly") }} sofa

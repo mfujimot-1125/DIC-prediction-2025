@@ -16,11 +16,8 @@ with
                         'albumin',
                         'activated_partial_thromboplastin_time',
                         'international_normalized_ratio_of_prothrombin_time',
-                        'prothrombin_time_percentage',
-                        'prothrombin_time',
                         'd_dimer',
                         'fibrinogen',
-                        'antithrombin',
                         'fdp'
                     )
                     and icu_stay_id in (
@@ -44,14 +41,113 @@ with
                     'albumin',
                     'activated_partial_thromboplastin_time',
                     'international_normalized_ratio_of_prothrombin_time',
-                    'prothrombin_time_percentage',
-                    'prothrombin_time',
                     'd_dimer',
                     'fibrinogen',
-                    'antithrombin',
                     'fdp'
                 )
             )
+    ),
+    forward_filled as (
+        select
+            icu_stay_id,
+            time,
+            {{
+                forward_filling(
+                    "wbc",
+                    "unbounded",
+                    partition_keys=["icu_stay_id"],
+                    order=["time"],
+                )
+            }},
+            {{
+                forward_filling(
+                    "hemoglobin",
+                    "unbounded",
+                    partition_keys=["icu_stay_id"],
+                    order=["time"],
+                )
+            }},
+            {{
+                forward_filling(
+                    "platelet",
+                    "unbounded",
+                    partition_keys=["icu_stay_id"],
+                    order=["time"],
+                )
+            }},
+            {{
+                forward_filling(
+                    "creatinine",
+                    "unbounded",
+                    partition_keys=["icu_stay_id"],
+                    order=["time"],
+                )
+            }},
+            {{
+                forward_filling(
+                    "total_bilirubin",
+                    "unbounded",
+                    partition_keys=["icu_stay_id"],
+                    order=["time"],
+                )
+            }},
+            {{
+                forward_filling(
+                    "crp",
+                    "unbounded",
+                    partition_keys=["icu_stay_id"],
+                    order=["time"],
+                )
+            }},
+            {{
+                forward_filling(
+                    "albumin",
+                    "unbounded",
+                    partition_keys=["icu_stay_id"],
+                    order=["time"],
+                )
+            }},
+            {{
+                forward_filling(
+                    "activated_partial_thromboplastin_time",
+                    "unbounded",
+                    partition_keys=["icu_stay_id"],
+                    order=["time"],
+                )
+            }},
+            {{
+                forward_filling(
+                    "international_normalized_ratio_of_prothrombin_time",
+                    "unbounded",
+                    partition_keys=["icu_stay_id"],
+                    order=["time"],
+                )
+            }},
+            {{
+                forward_filling(
+                    "d_dimer",
+                    "unbounded",
+                    partition_keys=["icu_stay_id"],
+                    order=["time"],
+                )
+            }},
+            {{
+                forward_filling(
+                    "fibrinogen",
+                    "unbounded",
+                    partition_keys=["icu_stay_id"],
+                    order=["time"],
+                )
+            }},
+            {{
+                forward_filling(
+                    "fdp",
+                    "unbounded",
+                    partition_keys=["icu_stay_id"],
+                    order=["time"],
+                )
+            }}
+        from pivot_laboratory_test
     ),
     join_laboratory_tests as (
         select
@@ -73,7 +169,7 @@ with
             lab.fdp as fdp
         from {{ ref("medicu", "research_dic_prediction_2025_02_time_windows") }} tw
         left join
-            pivot_laboratory_tests as lab
+            forward_filled as lab
             on tw.icu_stay_id = lab.icu_stay_id
             and tw.start_time <= lab.time
             and lab.time < tw.end_time

@@ -884,23 +884,24 @@ with
                         or icd10 like 'T814%'
                     )
             )
-        select distinct
+        select
             icu_stay_id,
-            coalesce(nervous_system_flag, 0) as infected_nervous_system,
-            coalesce(cardiovascular_flag, 0) as infected_cardiovascular,
-            coalesce(respiratory_flag, 0) as infected_respiratory,
-            coalesce(abdomen_flag, 0) as infected_abdomen,
-            coalesce(urinary_tract_flag, 0) as infected_urinary_tract,
-            coalesce(soft_tissue_flag, 0) as infected_soft_tissue,
-            coalesce(other_flag, 0) as infected_other
+            max(nervous_system_flag) as infected_nervous_system,
+            max(cardiovascular_flag) as infected_cardiovascular,
+            max(respiratory_flag) as infected_respiratory,
+            max(abdomen_flag) as infected_abdomen,
+            max(urinary_tract_flag) as infected_urinary_tract,
+            max(soft_tissue_flag) as infected_soft_tissue,
+            max(other_flag) as infected_other
         from icd10s
-        left join nervous_system using (icu_stay_id)
-        left join cardiovascular using (icu_stay_id)
-        left join respiratory using (icu_stay_id)
-        left join abdomen using (icu_stay_id)
-        left join urinary_tract using (icu_stay_id)
-        left join soft_tissue using (icu_stay_id)
-        left join other using (icu_stay_id)
+        left join nervous_system using(icu_stay_id)
+        left join cardiovascular using(icu_stay_id)
+        left join respiratory using(icu_stay_id)
+        left join abdomen using(icu_stay_id)
+        left join urinary_tract using(icu_stay_id)
+        left join soft_tissue using(icu_stay_id)
+        left join other using(icu_stay_id)
+        group by icu_stay_id
     )
 select *
 from icu_stays

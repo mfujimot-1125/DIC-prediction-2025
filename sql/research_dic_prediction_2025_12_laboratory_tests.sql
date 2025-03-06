@@ -147,7 +147,7 @@ with
                     order=["time"],
                 )
             }}
-        from pivot_laboratory_test
+        from pivot_laboratory_tests
     ),
     join_laboratory_tests as (
         select

@@ -5,7 +5,7 @@ with
         timestamp_trunc(min(start_time), day) as first_dic_time,
         1 as label_dic_diagnosis
       from {{ ref("medicu", "one_icu_derived_dic_hourly") }}
-      where isth_dic_24hours >= 5 and time_window_index >= 0
+      where isth_dic_score >= 5 and time_window_index >= 0
       group by icu_stay_id
     ),
     dic_score_joined as (

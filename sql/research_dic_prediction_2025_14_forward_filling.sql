@@ -312,30 +312,9 @@ with
                     order=["time_window_index"],
                 )
             }},
-            {{
-                forward_filling(
-                    "adrenaline",
-                    "unbounded",
-                    partition_keys=["icu_stay_id"],
-                    order=["time_window_index"],
-                )
-            }},
-            {{
-                forward_filling(
-                    "noradrenaline",
-                    "unbounded",
-                    partition_keys=["icu_stay_id"],
-                    order=["time_window_index"],
-                )
-            }},
-            {{
-                forward_filling(
-                    "vasopressin",
-                    "unbounded",
-                    partition_keys=["icu_stay_id"],
-                    order=["time_window_index"],
-                )
-            }}
+            adrenaline,
+            noradrenaline,
+            vasopressin,
             {{
                 forward_filling(
                     "wbc",

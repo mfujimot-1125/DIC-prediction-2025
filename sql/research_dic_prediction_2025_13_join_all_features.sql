@@ -9,17 +9,14 @@ with
     ),
     join_labeling_dic_diagnosis as (
         select
-            join_current_dic_score.*,
+            join_static_variables.*,
             labeling_dic_diagnosis.* except (
                 icu_stay_id, time_window_index, start_time, end_time
             )
         from join_static_variables
         left join
-            {{
-                ref(
-                    "medicu", "research_dic_prediction_2025_04_labeling_dic_diagnosis"
-                )
-            }} labeling_dic_diagnosis using (icu_stay_id, time_window_index)
+            {{ ref("medicu", "research_dic_prediction_2025_04_labeling_dic_diagnosis") }} labeling_dic_diagnosis 
+            using (icu_stay_id, time_window_index)
     ),
     join_blood_gas as (
         select

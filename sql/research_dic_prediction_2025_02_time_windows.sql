@@ -20,7 +20,7 @@ with
     censor_outcome_or_treatment as (
         select icu_stay_id, timestamp_trunc(min(start_time), day) as censoring_time
         from {{ ref("medicu", "one_icu_derived_dic_hourly") }}
-        where isth_dic_24hours >= 5
+        where isth_dic_score >= 5
         group by icu_stay_id
         union all
         select icu_stay_id, timestamp_trunc(min(time), day) as censoring_time

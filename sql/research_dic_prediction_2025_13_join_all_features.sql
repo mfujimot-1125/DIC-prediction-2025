@@ -36,18 +36,18 @@ with
             {{ ref("medicu", "research_dic_prediction_2025_06_urine_output") }} urine_output
             using (icu_stay_id, time_window_index)
     ),
-    join_sofa_scores as (
+    join_pf_ratios as (
         select
             join_urine_output.*,
-            sofa_scores.* except (icu_stay_id, time_window_index, start_time, end_time)
+            pf_ratios.* except (icu_stay_id, time_window_index, start_time, end_time)
         from join_urine_output
         left join
-            {{ ref("medicu", "research_dic_prediction_2025_07_sofa_scores") }} sofa_scores
+            {{ ref("medicu", "research_dic_prediction_2025_07_pfratios") }} pf_ratios
             using (icu_stay_id, time_window_index)
     ),
     join_vital_measurements as (
         select
-            join_sofa_scores.*,
+            join_pf_ratios.*,
             vital_measurements.* except (
                 icu_stay_id, time_window_index, start_time, end_time
             )

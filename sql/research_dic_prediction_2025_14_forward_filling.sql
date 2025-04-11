@@ -58,7 +58,7 @@ with
             }},
             {{
                 forward_filling(
-                    "sofa_respiration",
+                    "pfratio",
                     "unbounded",
                     partition_keys=["icu_stay_id"],
                     order=["time_window_index"],

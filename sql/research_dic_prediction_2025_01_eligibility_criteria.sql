@@ -6,7 +6,9 @@ with
                 from {{ ref("medicu", "one_icu_icu_diagnoses") }}
                 where
                     (
-                        icd10 like 'J153%'
+                        icd10 like 'A40%'
+                        or icd10 like 'A41%'
+                        or icd10 like 'J153%'
                         or icd10 like 'J128%'
                         or icd10 like 'J152%'
                         or icd10 like 'J869%'
@@ -821,12 +823,18 @@ with
                 select distinct icu_stay_id
                 from {{ ref("medicu", "one_icu_derived_extended_icu_stays") }}
                 where age >= 18
+            ),
+            hospital as (
+                select distinct icu_stay_id
+                from {{ ref("medicu", "one_icu_derived_extended_icu_stays") }}
+                where hospital_id in (1,2,3,5,6,7,8)
             )
         select distinct icu_stay_id
         from infected_patients
         where
             icu_stay_id in (select icu_stay_id from sepsis)
             and icu_stay_id in (select icu_stay_id from age)
+            and icu_stay_id in (select icu_stay_id from hospital)
     ),
     exclusion_criteria as (
         with

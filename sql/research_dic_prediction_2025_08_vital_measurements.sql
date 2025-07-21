@@ -11,7 +11,7 @@ with
             coalesce(invasive_mbp, non_invasive_mbp) as mbp,
             coalesce(invasive_dbp, non_invasive_dbp) as dbp,
             spo2
-        from {{ ref("medicu", "one_icu_vital_measurements") }} as vs
+        from `medicu-beta.snapshots_one_icu.vital_measurements_20250428` as vs
         where
             icu_stay_id in (
                 select icu_stay_id

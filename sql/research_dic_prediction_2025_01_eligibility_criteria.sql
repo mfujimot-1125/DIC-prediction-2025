@@ -3,7 +3,7 @@ with
         with
             infected_patients as (
                 select distinct icu_stay_id
-                from {{ ref("medicu", "one_icu_icu_diagnoses") }}
+                from `medicu-beta.snapshots_one_icu.icu_diagnoses_20250428`
                 where
                     (
                         icd10 like 'A40%'
@@ -805,13 +805,7 @@ with
                 with
                     sofa_score as (
                         select icu_stay_id, max(sofa_24hours) as sofa_max
-                        from
-                            {{
-                                ref(
-                                    "medicu",
-                                    "one_icu_derived_sofa_hourly",
-                                )
-                            }}
+                        from `medicu-beta.snapshots_one_icu_derived.sofa_hourly_20250428`
                         where time_window_index >= 0 and time_window_index <= 23
                         group by icu_stay_id
                     )
@@ -821,12 +815,12 @@ with
             ),
             age as (
                 select distinct icu_stay_id
-                from {{ ref("medicu", "one_icu_derived_extended_icu_stays") }}
+                from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250428`
                 where age >= 18
             ),
             hospital as (
                 select distinct icu_stay_id
-                from {{ ref("medicu", "one_icu_derived_extended_icu_stays") }}
+                from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250428`
                 where hospital_id in (1,2,3,5,6,7,8)
             )
         select distinct icu_stay_id
@@ -841,14 +835,14 @@ with
             censor_outcome_or_treatment as (
                 select
                     icu_stay_id, timestamp_trunc(min(start_time), day) as censoring_time
-                from {{ ref("medicu", "one_icu_derived_dic_hourly") }}
+                from `medicu-beta.snapshots_one_icu_derived.dic_hourly_20250428`
                 where isth_dic_score >= 5
                 group by icu_stay_id
                 union all
                 select icu_stay_id, timestamp_trunc(min(time), day) as censoring_time
-                from {{ ref("medicu", "one_icu_injections") }}
+                from `medicu-beta.snapshots_one_icu.injections_20250428`
                 left join
-                   {{ ref("medicu", "one_icu_injection_components") }} using (injection_id)
+                   `medicu-beta.snapshots_one_icu.injection_components_20250428` using (injection_id)
                 where
                     injection_product_name
                     in ("nonthron", "neuart", "anthrobin", "acolan", "recomodulin")
@@ -856,16 +850,16 @@ with
                 union all
                 select
                     icu_stay_id, timestamp_trunc(min(start_time), day) as censoring_time
-                from {{ ref("medicu", "one_icu_blood_transfusions") }}
+                from `medicu-beta.snapshots_one_icu.blood_transfusions_20250428`
                 left join
-                    {{ ref("medicu", "one_icu_blood_transfusion_components") }} using (
+                    `medicu-beta.snapshots_one_icu.blood_transfusion_components_20250428` using (
                         blood_transfusion_id
                     )
                 where blood_product_name like "pc%"
                 group by icu_stay_id
                 union all
                 select icu_stay_id, timestamp_trunc(out_time, day) as censoring_time
-                from {{ ref("medicu", "one_icu_derived_extended_icu_stays") }}
+                from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250428`
             ),
             first_censoring as (
                 select icu_stay_id, min(censoring_time) as censoring_time
@@ -873,7 +867,7 @@ with
                 group by icu_stay_id
             )
         select icu_stay_id
-        from {{ ref("medicu", "one_icu_derived_extended_icu_stays") }}
+        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250428`
         left join first_censoring using (icu_stay_id)
         where timestamp_trunc(in_time, day) >= censoring_time
     )

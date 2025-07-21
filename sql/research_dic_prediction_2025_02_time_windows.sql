@@ -3,8 +3,7 @@ with
         select
             extended_icu_stays.*,
             timestamp_trunc(in_time, day) as first_time_window_start_time
-        from
-            {{ ref("medicu", "one_icu_derived_extended_icu_stays") }} extended_icu_stays
+        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250428` extended_icu_stays
         where
             icu_stay_id in (
                 select icu_stay_id
@@ -19,30 +18,30 @@ with
     ),
     censor_outcome_or_treatment as (
         select icu_stay_id, timestamp_trunc(min(start_time), day) as censoring_time
-        from {{ ref("medicu", "one_icu_derived_dic_hourly") }}
+        from `medicu-beta.snapshots_one_icu_derived.dic_hourly_20250428`
         where isth_dic_24hours >= 5
         group by icu_stay_id
         union all
         select icu_stay_id, timestamp_trunc(min(time), day) as censoring_time
-        from {{ ref("medicu", "one_icu_injections") }}
+        from `medicu-beta.snapshots_one_icu.injections_20250428`
         left join
-            {{ ref("medicu", "one_icu_injection_components") }} using (injection_id)
+            `medicu-beta.snapshots_one_icu.injection_components_20250428` using (injection_id)
         where
             injection_product_name
             in ("nonthron", "neuart", "anthrobin", "acolan", "recomodulin")
         group by icu_stay_id
         union all
         select icu_stay_id, timestamp_trunc(min(start_time), day) as censoring_time
-        from {{ ref("medicu", "one_icu_blood_transfusions") }}
+        from `medicu-beta.snapshots_one_icu.blood_transfusions_20250428`
         left join
-            {{ ref("medicu", "one_icu_blood_transfusion_components") }} using (
+            `medicu-beta.snapshots_one_icu.blood_transfusion_components_20250428` using (
                 blood_transfusion_id
             )
         where blood_product_name like "pc%"
         group by icu_stay_id
         union all
         select icu_stay_id, timestamp_trunc(out_time, day) as censoring_time
-        from {{ ref("medicu", "one_icu_derived_extended_icu_stays") }}
+        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250428`
         union all
         select icu_stay_id, datetime_add(first_time_window_start_time, interval 7 day) as censoring_time
         from define_first_time_window_start_time

@@ -1,7 +1,7 @@
 with
     gcs as (
         select icu_stay_id, time, gcs_e, gcs_v, gcs_m
-        from {{ ref("medicu", "one_icu_gcs") }}
+        from `medicu-beta.snapshots_one_icu.gcs_20250428`
         where
             icu_stay_id in (
                 select icu_stay_id

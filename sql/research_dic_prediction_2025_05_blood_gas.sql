@@ -10,7 +10,7 @@ with
         from
             (
                 select icu_stay_id, time, field_name, value
-                from {{ ref("medicu", "one_icu_blood_gas") }}
+                from from `medicu-beta.snapshots_one_icu.blood_gas_20250428`
                 where
                     field_name in ('ph', 'base_excess', 'lactate', 'glucose')
                     and sample_type in ('arterial_blood_gas', 'venous_blood_gas')

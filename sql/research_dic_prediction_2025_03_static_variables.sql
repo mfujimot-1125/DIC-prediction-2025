@@ -1,7 +1,7 @@
 with
     icu_stays as (
         select icu_stay_id, hospital_id, female, height, age
-        from {{ ref("medicu", "one_icu_derived_extended_icu_stays") }}
+        from `medicu-beta.snapshots_one_icu_derived.extended_icu_stays_20250428`
         where
             icu_stay_id in (
                 select icu_stay_id
@@ -16,11 +16,11 @@ with
     ),
     charlson_comorbidity_index as (
         select icu_stay_id, charlson_comorbidity_index
-        from {{ ref("medicu", "one_icu_derived_charlson") }}
+        from `medicu-beta.snapshots_one_icu_derived.charlson_20250428`
     ),
     nervous_system as (
         select icu_stay_id, 1 as nervous_system_flag
-        from {{ ref("medicu", "one_icu_icu_diagnoses") }}
+        from `medicu-beta.snapshots_one_icu.icu_diagnoses_20250428`
         where
             (
                 icd10 like 'G008%'
@@ -112,7 +112,7 @@ with
     ),
     cardiovascular as (
         select icu_stay_id, 1 as cardiovascular_flag
-        from {{ ref("medicu", "one_icu_icu_diagnoses") }}
+        from `medicu-beta.snapshots_one_icu.icu_diagnoses_20250428`
         where
             (
                 icd10 like 'A395%'
@@ -144,7 +144,7 @@ with
     ),
     respiratory as (
         select icu_stay_id, 1 as respiratory_flag
-        from {{ ref("medicu", "one_icu_icu_diagnoses") }}
+        from `medicu-beta.snapshots_one_icu.icu_diagnoses_20250428`
         where
             (
                 icd10 like 'J153%'
@@ -292,7 +292,7 @@ with
     ),
     abdomen as (
         select icu_stay_id, 1 as abdomen_flag
-        from {{ ref("medicu", "one_icu_icu_diagnoses") }}
+        from `medicu-beta.snapshots_one_icu.icu_diagnoses_20250428`
         where
             (
                 icd10 like 'K650%'
@@ -455,7 +455,7 @@ with
     ),
     soft_tissue as (
         select icu_stay_id, 1 as soft_tissue_flag
-        from {{ ref("medicu", "one_icu_icu_diagnoses") }}
+        from `medicu-beta.snapshots_one_icu.icu_diagnoses_20250428`
         where
             (
                 icd10 like 'M0095%'
@@ -584,7 +584,7 @@ with
     ),
     other as (
         select icu_stay_id, 1 as other_flag
-        from {{ ref("medicu", "one_icu_icu_diagnoses") }}
+        from `medicu-beta.snapshots_one_icu.icu_diagnoses_20250428`
         where
             (
                 icd10 like 'A010%'

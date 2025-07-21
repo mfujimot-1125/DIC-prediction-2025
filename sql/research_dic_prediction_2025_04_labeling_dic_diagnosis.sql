@@ -4,7 +4,7 @@ with
         icu_stay_id,
         timestamp_trunc(min(start_time), day) as first_dic_time,
         1 as label_dic_diagnosis
-      from {{ ref("medicu", "one_icu_derived_dic_hourly") }}
+      from `medicu-beta.snapshots_one_icu_derived.dic_hourly_20250428`
       where isth_dic_score >= 5 and time_window_index >= 0
       group by icu_stay_id
     ),

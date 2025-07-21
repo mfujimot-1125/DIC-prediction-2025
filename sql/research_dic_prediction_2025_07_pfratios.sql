@@ -15,7 +15,7 @@ with
                         then true
                         else false
                     end as is_adjusted
-                from {{ ref("medicu", "one_icu_blood_gas") }}
+                from `medicu-beta.snapshots_one_icu.blood_gas_20250428`
                 where
                     field_name = 'po2'
                     and sample_type = 'arterial_blood_gas'
@@ -24,27 +24,20 @@ with
             ),
             union_all_respiratory_support as (
                 select icu_stay_id, start_time, end_time, fio2_ordered as fio2
-                from {{ ref("medicu", "one_icu_mechanical_ventilations") }}
+                from `medicu-beta.snapshots_one_icu.mechanical_ventilations_20250428`
                 union all
                 select icu_stay_id, start_time, end_time, fio2_ecmo as fio2
-                from {{ ref("medicu", "one_icu_ecmo") }}
+                from `medicu-beta.snapshots_one_icu.ecmo_20250428`
                 where type in ('vv', 'vav')
                 union all
                 select icu_stay_id, start_time, end_time, fio2_nippv as fio2
-                from
-                    {{
-                        ref(
-                            "medicu",
-                            "one_icu_non_invasive_positive_pressure_ventilations",
-                        )
-                    }}
+                from `medicu-beta.snapshots_one_icu.non_invasive_positive_pressure_ventilations_20250428`
                 union all
                 select icu_stay_id, start_time, end_time, estimated_fio2 as fio2
-                from
-                    {{ ref("medicu", "one_icu_derived_oxygen_therapy_estimated_fio2") }}
+                from `medicu-beta.snapshots_one_icu_derived.oxygen_therapy_estimated_fio2_20250428`
                 union all
                 select icu_stay_id, start_time, end_time, fio2_nhf as fio2
-                from {{ ref("medicu", "one_icu_high_flow_oxygen_therapy") }}
+                from `medicu-beta.snapshots_one_icu.high_flow_oxygen_therapy_20250428`
             ),
             join_fio2 as (
                 select pa.icu_stay_id, pa.time, pao2, coalesce(max(rs.fio2), 21) as fio2

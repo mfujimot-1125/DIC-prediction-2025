@@ -4,7 +4,7 @@ with
         from
             (
                 select icu_stay_id, time, field_name, value
-                from {{ ref("medicu", "one_icu_laboratory_tests_blood") }}
+                from `medicu-beta.snapshots_one_icu.laboratory_tests_blood_20250428`
                 where
                     field_name in (
                         'wbc',

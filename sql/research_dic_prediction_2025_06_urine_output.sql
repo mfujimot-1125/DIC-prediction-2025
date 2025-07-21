@@ -1,7 +1,7 @@
 with
     uo_extract as (
         select icu_stay_id, time, sum(urine) as urine_output
-        from {{ ref("medicu", "one_icu_out") }}
+        from `medicu-beta.snapshots_one_icu.out_20250428`
         where
             urine is not null
             and icu_stay_id in (

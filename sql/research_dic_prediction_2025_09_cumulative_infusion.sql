@@ -1,7 +1,7 @@
 with
     extract_infusion as (
         select icu_stay_id, start_time, end_time, ml_per_hour
-        from {{ ref("medicu", "one_icu_derived_input_amount_rate") }}
+        from `medicu-beta.snapshots_one_icu_derived.input_amount_rate_20250428`
         where
             source = 'infusions'
             and icu_stay_id in (

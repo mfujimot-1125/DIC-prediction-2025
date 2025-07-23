@@ -1,6 +1,6 @@
 # DIC-prediction-2025
 
-This repository contains code for extracting data from the OneICU database and developing predictive models for disseminated intravascular coagulation (DIC) in critically ill patients. The project aims to build an interpretable and reproducible pipeline for DIC prediction using real-world clinical data.
+This repository contains code for extracting data from the OneICU database and developing predictive models for disseminated intravascular coagulation (DIC) in patients with sepsis. The project aims to build an interpretable and reproducible pipeline for DIC prediction using real-world clinical data.
 
 ---
 

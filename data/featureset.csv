@@ -1,0 +1,64 @@
+Category,Feature,minimum model,compact model,full model
+patient demographic,Female,0,1,1
+,Height,0,1,1
+,Age,0,1,1
+,Time window index,0,1,1
+blood gas,pH,0,0,1
+,Base excess,0,0,1
+,Lactate,0,0,1
+,Glucose,0,0,1
+laboratory tests,WBC,0,1,1
+,Hemoglobin,0,1,1
+,Platelet,1,1,1
+,Creatinine,0,1,1
+,Total bilirubin,0,1,1
+,CRP,0,1,1
+,Albumin,0,1,1
+,APTT,0,1,1
+,PT-INR,1,1,1
+,D-dimer,1,1,1
+,Fibrinogen,1,1,1
+,FDP,0,1,1
+infected organ,Nervous system infection,0,1,1
+,Cardiovascular infection,0,1,1
+,Respiratory infection,0,1,1
+,Abdominal infection,0,1,1
+,Urinary tract infection,0,1,1
+,Soft tissue infection,0,1,1
+,Other infection,0,1,1
+charlson,Charlson comorbidity index,0,1,1
+pfratio,PaO2/FiO2 ratio,0,0,1
+vital measurements,BT (median),0,0,1
+,BT (90 percentile),0,0,1
+,HR (10 percentile),0,0,1
+,HR (median),0,0,1
+,HR (90 percentile),0,0,1
+,HR (sd),0,0,1
+,RR (10 percentile),0,0,1
+,RR (median),0,0,1
+,RR (90 percentile),0,0,1
+,RR (sd),0,0,1
+,SBP (10 percentile),0,0,1
+,SBP (median),0,0,1
+,SBP (90 percentile),0,0,1
+,SBP (sd),0,0,1
+,MBP (10 percentile),0,0,1
+,MBP (median),0,0,1
+,MBP (90 percentile),0,0,1
+,MBP (sd),0,0,1
+,DBP (10 percentile),0,0,1
+,DBP (median),0,0,1
+,DBP (90 percentile),0,0,1
+,DBP (sd),0,0,1
+,SpO2 (10 percentile),0,0,1
+,SpO2 (median),0,0,1
+,SpO2 (90 percentile),0,0,1
+,SpO2 (sd),0,0,1
+in_out,Urine output (rate),0,0,1
+,Infusion (rate),0,0,1
+gcs,GCS (E),0,0,1
+,GCS (V),0,0,1
+,GCS (M),0,0,1
+vasoactive drug,Noradrenaline (rate),0,0,1
+,Adrenaline (rate),0,0,1
+,Vasopressin (rate),0,0,1
